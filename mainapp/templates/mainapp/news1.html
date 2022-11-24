@@ -16,14 +16,15 @@
 
   <div class="col-lg-8">
 
-    {% for i in double_range %}
+    {% load multifor %}
+    {% for i in double_range; item_news in news_preview %}
     <div class="card my-2">
       <div class="card-body">
         <h5 class="card-title">{{ news_title }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">
           {{ datetime_obj|date:"Y-m-d h-i-s" }}
         </h6>
-        <p class="card-text">{{ news_preview }}</p>
+        <p class="card-text">{{ item_news }}</p>
         <a href="#" class="card-link">Подробнее</a>
       </div>
     </div>
