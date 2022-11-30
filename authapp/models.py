@@ -49,7 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         _("email address"),
         null=True,
-        unique=False,
+        unique=True,
         max_length=256,
         error_messages={
             "unique": _("A user with that email address already exists."),
@@ -76,8 +76,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
     
     EMAIL_FIELD = "email"
-    USERNAME_FIELD = "username"
-    REQUIRED_FIELDS = ["email"]
+    #USERNAME_FIELD = "username"
+    USERNAME_FIELD = "email"
+    #REQUIRED_FIELDS = ["email"]
+    REQUIRED_FIELDS = []
 
 
     class Meta:
