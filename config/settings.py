@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "markdownify.apps.MarkdownifyConfig",
     "multiforloop",
+    "social_django",
     "mainapp",
-    
+    "authapp",
 ]
 
 MIDDLEWARE = [
@@ -65,9 +66,12 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "django.template.context_processors.media",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "mainapp.context_processors.example.simple_context_processor",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -105,6 +109,32 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = "authapp.CustomUser"
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.github.GithubOAuth2",
+    "social_core.backends.vk.VKOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+    
+)
+
+
+
+SOCIAL_AUTH_GITHUB_KEY = "68ff5f40644e2d216241"
+SOCIAL_AUTH_GITHUB_SECRET = "c179b47e5c69a2e13f4d992e8f5a0db462868d4a"
+
+SOCIAL_AUTH_GITHUB_SCOPE = ["email"]
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = "51490342"
+SOCIAL_AUTH_VK_OAUTH2_SECRET = "ZWyRyWmN5zSfH3BVVtFr"
+
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ["email"]
+
+LOGIN_REDIRECT_URL = "mainapp:main_page"
+LOGOUT_REDIRECT_URL = "mainapp:main_page"
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -133,3 +163,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
