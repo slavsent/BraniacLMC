@@ -7,7 +7,9 @@ from mainapp import models as mainapp_models
 
 @admin.register(mainapp_models.News)
 class NewsAdmin(admin.ModelAdmin):
+    list_display = ["id", "title", "preambule", "deleted"]
     search_fields = ["title", "preambule", "body"]
+    list_filter = ["deleted", "created"]
 
 
 @admin.register(mainapp_models.Lesson)
