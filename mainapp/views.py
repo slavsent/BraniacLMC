@@ -1,4 +1,6 @@
 import logging
+from collections import deque
+from copy import deepcopy
 
 from django.conf import settings
 from django.contrib import messages
@@ -150,11 +152,20 @@ class LogView(TemplateView):
         context = super(LogView, self).get_context_data(**kwargs)
         log_slice = []
         with open(settings.LOG_FILE, "r") as log_file:
+            """
             for i, line in enumerate(log_file):
                 if i == 1000:  # first 1000 lines
                     break
                 log_slice.insert(0, line)  # append at start
+            """
+            for i, line in enumerate(log_file):
+                if i > 1000:  # first 1000 lines
+                    log_slice.pop()
+                    
+                log_slice.insert(0, line)  # append at start
+            
             context["log"] = "".join(log_slice)
+            
         return context
 
 
