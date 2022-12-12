@@ -57,14 +57,19 @@ class NewsDeleteView(PermissionRequiredMixin, DeleteView):
     permission_required = ("mainapp.delete_news",)
 
 
-class CoursesListView(TemplateView):
+class CoursesListView(ListView):
     template_name = "mainapp/courses_list.html"
-
+    model = mainapp_models.Courses
+    paginate_by = 6
+    
     def get_context_data(self, **kwargs):
         context = super(CoursesListView, self).get_context_data(**kwargs)
-        context["objects"] = mainapp_models.Courses.objects.all()[:7]
+        context["objects"] = mainapp_models.Courses.objects.all
+        
+        #context["objects"] = mainapp_models.Courses.objects.all()[:6]
         return context
 
+    
 
 class CoursesDetailView(TemplateView):
     template_name = "mainapp/courses_detail.html"
@@ -91,6 +96,14 @@ class CoursesDetailView(TemplateView):
                 .select_related()
             )
             cache.set(f"feedback_list_{pk}", context["feedback_list"], timeout=300)  # 5 minutes
+
+            # Archive object for tests --->
+            import pickle
+
+            with open(f"mainapp/fixtures/005_feedback_list_{pk}.bin", "wb") as outf:
+                pickle.dump(context["feedback_list"], outf)
+            # <--- Archive object for tests
+
         else:
             context["feedback_list"] = cached_feedback
 
